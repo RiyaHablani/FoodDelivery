@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
+require("dotenv").config(); // Load environment variables from .env file
 
-const mongoURI =  "mongodb+srv://riyahablani17:riyahablani17@cluster0.0td1d.mongodb.net/gofoodmern?retryWrites=true&w=majority&appName=Cluster0";
-;
+const mongoURI = process.env.MONGO_URI; // Use the environment variable
+
+// Log the mongoURI for debugging (make sure not to expose it in production)
+console.log(`MongoURI: ${mongoURI}`);
 
 const mongoDB = async () => {
   try {

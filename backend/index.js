@@ -1,9 +1,10 @@
 const path = require("path");
 const express = require("express");
+require("dotenv").config(); // Load environment variables from .env file
 
-// Directly set the environment variables
-process.env.NODE_ENV = "production";
-process.env.PORT = 5000;
+// Log the environment variables
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+console.log(`PORT: ${process.env.PORT}`);
 
 global.foodData = require("./db")(function call(err, data, CatData) {
   if (err) console.log(err);
@@ -33,13 +34,14 @@ app.use("/api", require("./Routes/CreateUser"));
 app.use("/api", require("./Routes/DisplayData"));
 
 //-----------------Deployment------------------
-const __dirname1 = path.resolve();
+const __dirname2 = path.resolve(); // This resolves to your backend folder
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname1, "/build")));
+  // Serve static files from the frontend's build directory, which is in the main folder
+  app.use(express.static(path.join(__dirname2, "/build"))); // Go one level up to the main folder
 
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname1, "build", "index.html"));
+    res.sendFile(path.resolve(__dirname2, "/build", "index.html"));
   });
 } else {
   app.get("/", (req, res) => {
